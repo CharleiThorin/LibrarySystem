@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>-->
+
+<StackPane fx:id="anchorp" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.Controller.SystemController">
+   <children>
+      <BorderPane fx:id="support" layoutX="1.0" prefHeight="500.0" prefWidth="724.0">
+         <top>
+             <JFXToolbar minHeight="52.0" minWidth="1000" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: white">
+                 <left>
+
+                 </left>
+                 <right>
+                     <JFXComboBox fx:id="combo" minHeight="50" minWidth="50">
+                         <items>
+                             <FXCollections fx:factory="observableArrayList">
+                                 <String fx:id="reihe" fx:value="Books" />
+                                 <String fx:id="parallel" fx:value="Members" />
+                             </FXCollections>
+
+                         </items>
+                     </JFXComboBox>
+                 </right>
+               <left>
+                   <AnchorPane>
+                       <children>
+                           <Label layoutX="31.0" layoutY="-13.0" prefHeight="85.0" prefWidth="145.0" text="Library" textAlignment="CENTER">
+                               <font>
+                                   <Font name="Cambria" size="32.0" />
+                               </font>
+                           </Label>
+<!--                           <FontAwesomeIconView glyphName="BOOK" layoutX="48.0" layoutY="24.0" size="10" wrappingWidth="32.0" />-->
+                       </children>
+                   </AnchorPane>
+               </left>
+             </JFXToolbar>
+         </top>
+          <left>
+            <VBox prefHeight="500.0" prefWidth="10.0" BorderPane.alignment="CENTER_LEFT">
+               <children>
+                  <StackPane prefHeight="187.0" prefWidth="118.0">
+
+                  </StackPane>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <StackPane fx:id="stackpaneBody" prefHeight="500.0" prefWidth="724.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox prefHeight="75.0" prefWidth="700.0" spacing="608">
+                           <children>
+                              <JFXComboBox fx:id="combo2" minHeight="50" minWidth="50" prefHeight="50.0" prefWidth="171.0">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:id="reihe1" fx:value="All" />
+                                       <String fx:id="parallel1" fx:value="Checkout records" />
+                                    </FXCollections>
+                                 </items>
+                              </JFXComboBox>
+                               <HBox alignment="BASELINE_RIGHT" spacing="20">
+                                   <JFXButton fx:id="checkout" buttonType="RAISED" onAction="#checkoutbooks" prefHeight="39.0" prefWidth="81.0" style="-fx-background-color: #238bcc#238bcc;" text="Checkout" textFill="WHITE" />
+                                   <JFXButton fx:id="add" buttonType="RAISED" onAction="#add" prefHeight="39.0" prefWidth="81.0" style="-fx-background-color: #238bcc#238bcc;" text="Add Book" textFill="WHITE" />
+                               </HBox>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="book_table" prefHeight="400.0" prefWidth="973.0" translateX="-6.0">
+                                <columns>
+                                  <TableColumn fx:id="col_isbn" prefWidth="266.0" text="ISBN" />
+                                  <TableColumn fx:id="col_title" prefWidth="366.0" text="Title" />
+                                    <TableColumn fx:id="col_author" prefWidth="338.0" text="Author" />
+                                </columns>
+                              </TableView>
+                              <TableView fx:id="memeber_table" layoutX="-8.0" layoutY="-9.0" prefHeight="400.0" prefWidth="973.0" translateX="2.0" translateY="14.0" visible="false">
+                                <columns>
+                                  <TableColumn fx:id="col_fname" prefWidth="180.0" text="First Name" />
+                                  <TableColumn fx:id="col_lname" prefWidth="180.0" text="Last Name" />
+                                  <TableColumn fx:id="col_phone" prefWidth="180.0" text="Phone Number" />
+                                  <TableColumn fx:id="col_street" prefWidth="145.0" text="Street" />
+                                  <TableColumn fx:id="col_city" prefWidth="145.0" text="City" />
+                                  <TableColumn fx:id="col_zipCode" prefWidth="135.0" text="Zip Code" />
+                                </columns>
+                              </TableView>
+                              <TableView fx:id="rec_book_table1" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="973.0" translateX="-14.0" visible="false">
+                                 <columns>
+                                    <TableColumn fx:id="rec_col_isbn" prefWidth="184.0" text="ISBN" />
+                                    <TableColumn fx:id="rec_col_title" prefWidth="226.0" text="Title" />
+                                    <TableColumn fx:id="rec_col_author" prefWidth="162.0" text="Author" />
+                                    <TableColumn fx:id="rec_col_due" prefWidth="183.0" text="Due Date" />
+                                    <TableColumn fx:id="rec_col_name" prefWidth="215.0" text="name" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets left="8.0" right="9.0" top="18.0" />
+               </BorderPane.margin>
+            </StackPane>
+         </center>
+         <bottom>
+            <HBox prefHeight="24.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+   </children>
+</StackPane>
