@@ -21,11 +21,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import library.Model.*;
 import library.data.DataAccess;
-
+import library.data.TestData;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -109,6 +110,10 @@ public class SystemController implements Initializable {
     DataAccess dataAccess = DataAccess.getInstance();
     public static Employee currentUser = new Employee(UserRole.LIBRARIAN, "sol");
 
+    //SAMU ATTRIBUTES
+	private static SystemController controller = new SystemController();
+	private static DataAccess da;
+	//END SAMU ATTRIBUTES
 
 
 //    public void login() {
@@ -434,7 +439,7 @@ public class SystemController implements Initializable {
                 String cty = city.getText();
                 String zipcd = zipCode.getText();
                 LibraryMember m = new LibraryMember(fname,lname, phoneNo, new Address(strt,cty,Integer.parseInt(zipcd)));
-                dataAccess.addMember(m);
+//                addMember(memberId, fname, lname, phoneNo,new Address(strt,cty,Integer.parseInt(zipcd)));
                 refreshMemberTable();
                 dialog.close();
 //            stackpaneBody.getChildren().remove(stackPane1);
@@ -574,7 +579,160 @@ public class SystemController implements Initializable {
         members = FXCollections.observableArrayList(dataAccess.getMembers());
         memeber_table.setItems(members);
     }
+    
+    
+    
+    //SAMU METHODS
+	public static SystemController getControllerIstance() {
+		return controller;
+	}
+	/**
+	 * This method checks if memberId already exists -- if so, it cannot be
+	 * added as a new member, and an exception is thrown.
+	 * If new, creates a new LibraryMember based on input data and uses DataAccess to store it.
+	 * If membe
+	 */
+	public void addNewMember(String memberId, String firstName, String lastName,
+			String telNumber, Address addr) throws LibrarySystemException {
+		LibraryMember mem = search(memberId);
+		if(mem != null) {
+			throw new LibrarySystemException("A library member with memberId = " + memberId + " already exists!"); 
+		}
+		mem  = new LibraryMember(memberId, firstName, lastName, addr, telNumber);
+		da = DataAccess.getDataAccessIstance();
+		da.saveNewMember(mem);
+	}
+	/**
+	 * Reads data store for a library member with specified id.
+	 * Ids begin at 1001...
+	 * Returns a LibraryMember if found, null otherwise
+	 * 
+	 */
+	public LibraryMember search(String memberId) {
+		da = DataAccess.getDataAccessIstance();
+		return da.searchMember(memberId);
+	}
+	/**
+	 * Same as creating a new member (because of how data is stored)
+	 */
+	public void updateMemberInfo(String memberId, String firstName, String lastName,
+			String telNumber, Address addr) throws LibrarySystemException {
+		LibraryMember mem = search(memberId);
+		if(mem == null) {
+			throw new LibrarySystemException("No library member with memberId = " + memberId + " found!"); 
+		}
+		mem = new LibraryMember(memberId, firstName, lastName, addr, telNumber);
+		da = DataAccess.getDataAccessIstance();
+		da.saveNewMember(mem);
+	}
+	
+	/**
+	 * Looks up Book by isbn from data store. If not found, an exception is thrown.
+	 * If no copies are available for checkout, an exception is thrown.
+	 * If found and a copy is available, member's checkout record is
+	 * updated and copy of this publication is set to "not available"
+	 */
+	public void checkoutBook(String memberId, String isbn) throws LibrarySystemException {
+		da = DataAccess.getDataAccessIstance();
+		da.checkoutBook(memberId, isbn);
+	}
+	
+	public Book searchBook(String isbn) {
+		da = DataAccess.getDataAccessIstance();
+		return da.searchBook(isbn);
+	}
+	
+	public List<String> allMemberIds() {
+		da = DataAccess.getDataAccessIstance();
+		List<String> retval = new ArrayList<>();
+		retval.addAll(da.readMemberMap().keySet());
+		return retval;
+	}
+	
+	public List<String> allBookIds() {
+		da = DataAccess.getDataAccessIstance();
+		List<String> retval = new ArrayList<>();
+		retval.addAll(da.readBooksMap().keySet());
+		return retval;
+	}
+	
+	public boolean addBook(String title, List<Author> authors, String isbn, int maxCheckoutLength) 
+			throws LibrarySystemException {
+		Book test = searchBook(isbn);
+		if(test != null) throw new LibrarySystemException("Book with isbn " + isbn 
+			+ " is already in the library collection!");
+		da = DataAccess.getDataAccessIstance();
+		da.saveNewBook(new Book(title, authors, isbn, maxCheckoutLength));
+		return true;
+	}
+	
+	
+	public boolean addBookCopy(String isbn) throws LibrarySystemException {
+		Book book = searchBook(isbn);
+		if(book == null) throw new LibrarySystemException("No book with isbn " + isbn 
+			+ " is in the library collection!");
+		book.addCopy();
+		return true;
+	}
+	
+	/** Returns the copyNums of the copies of this book */
+	public List<Integer> getCopyNumbers(Book b) {
+		return b.getCopyNums();
+	}
+	
+	public void printCheckoutRecord(String memberId) throws LibrarySystemException {
+		LibraryMember mem = search(memberId);
+		if(mem == null) throw new LibrarySystemException("Library member with ID " + memberId + " not found!");
+		System.out.println(mem.formattedCheckoutRecord());
+	}
+	
+	/**
+	 * Returns a CopyStatus which tells whether the copy
+	 * is overdue and who the borrower is.
+	 */
+	public String computeStatus(BookCopy copy) {
+		da = DataAccess.getDataAccessIstance();
+		return da.computeStatus(copy);	
+	}
+	//END SAMU METHODS
+    
 
+	//SAMU MAIN TESTER
+	public static void main(String[] args) throws LibrarySystemException {
+		controller = SystemController.getControllerIstance();
+		da = DataAccess.getDataAccessIstance();
+		//test addMember
+//		try {
+//			controller.addNewMember("1011", "Test First", "Test Last",
+//				"555-555-5555", new Address("11 Test", "TestVille", "IA", "52556"));
+//		} catch(LibrarySystemException e) {
+//			e.printStackTrace();
+//		}
+//		LibraryMember member = da.searchMember("1011");
+//		System.out.println("Added member " + member + "\n");
+		
+		//test computeStatus	
+		
+		Book b = new Book("The Big Horse", 
+				Arrays.asList((new TestData()).allAuthors.get(0), 
+						(new TestData()).allAuthors.get(1)), "28-12388", 21);
+//
+		da.saveNewBook(b);
+		BookCopy c = b.getNextAvailableCopy();
+		int num = c.getCopyNum();
+		controller.checkoutBook("1001", "28-12388");
+		System.out.println("Copy available? " + c.isAvailable());
+		b = da.searchBook("28-12388");
+		c = b.getCopy(num);
+		System.out.println(controller.computeStatus(c));
+		//System.out.println(controller.computeStatus(c));
+		//LendableCopy copy = new BookCopy(b, 23);
+		//System.out.println(controller.computeStatus(copy));
+		
+	}
+	//END SAMU MAIN TESTER
+	
+	
 }
 
 

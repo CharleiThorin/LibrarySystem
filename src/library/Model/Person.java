@@ -1,7 +1,11 @@
 package library.Model;
 
-public class Person {
-    String firstName;
+import java.io.Serializable;
+
+public class Person implements Serializable {
+ 
+	private static final long serialVersionUID = 2128819190515577029L;
+	String firstName;
     String lastName;
     String phoneNumber;
     Address address;
