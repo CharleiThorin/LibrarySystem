@@ -96,9 +96,8 @@
                                   <TableColumn fx:id="col_fname" prefWidth="180.0" text="First Name" />
                                   <TableColumn fx:id="col_lname" prefWidth="180.0" text="Last Name" />
                                   <TableColumn fx:id="col_phone" prefWidth="180.0" text="Phone Number" />
-                                  <TableColumn fx:id="col_street" prefWidth="145.0" text="Street" />
-                                  <TableColumn fx:id="col_city" prefWidth="145.0" text="City" />
-                                  <TableColumn fx:id="col_zipCode" prefWidth="135.0" text="Zip Code" />
+                                  <TableColumn fx:id="col_address" prefWidth="145.0" text="Address" />
+                                
                                 </columns>
                               </TableView>
                               <TableView fx:id="rec_book_table1" layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="973.0" translateX="-14.0" visible="false">
