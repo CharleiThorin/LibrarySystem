@@ -9,13 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataAccess {
-    List<LibraryMember> mebers;
+   //  List<LibraryMember> mebers; Changed by Abrha
+	List<Person> libraryMebers;
     List<Book> books = new ArrayList<Book>();
     List<RecordEntry> recordEntries;
     private static DataAccess dataAccess=null;
 
     private DataAccess() {
-        this.mebers = new ArrayList<LibraryMember>();
+        this.libraryMebers = new ArrayList<Person>();
         this.books = new ArrayList<Book>();
         this.recordEntries = new ArrayList<RecordEntry>();
         loadSampleData();
@@ -25,7 +26,10 @@ public class DataAccess {
         Book b = new Book("Java", "Liang", "ABCD");
         b.addCopy(2);
         addBook(b);
-        LibraryMember m = new LibraryMember("Sol", "sol","641-111-2222", new Address("1000N 4th street", "FairField", 52556));
+        // Commented By Abrha
+      //  LibraryMember m = new LibraryMember("Sol", "sol","641-111-2222", new Address("1000N 4th street", "FairField", 52556));
+        //Added by Abrha
+        Person m = new LibraryMember(1001,"Sol", "sol","641-111-2222", new Address("1000N 4th street", "FairField","IOWA","52556"));
         addMember(m);
         RecordEntry r = new RecordEntry(b.getOneCopy(), m);
         this.addRecord(r);
@@ -36,13 +40,19 @@ public class DataAccess {
         }
         return dataAccess;
     }
-
-    public void addMember(LibraryMember m) {
-        this.mebers.add(m);
+//Commented by Abrha
+//    public void addMember(LibraryMember m) {
+//        this.mebers.add(m);
+//    }
+    
+  //Added By Abrha
+    public void addMember(Person m) {
+        this.libraryMebers.add(m);
     }
 
-    public List<LibraryMember> getMembers() {
-        return this.mebers;
+
+    public List<Person> getMembers() { // Type changed from LibraryMember to Person by Abrha
+        return this.libraryMebers;
     }
 
     public void addBook(Book b) {
@@ -85,15 +95,15 @@ public class DataAccess {
             recs.add(new RecData(r.getBookCopy().getBook().getISBN(),
                                  r.getBookCopy().getBook().getTitle(),
                                  r.getBookCopy().getBook().getAuthor(),
-                                 r.getMember().getFullName(), r.getBookCopy().getDueDate()));
+                                 r.getMember().getFirstName(), r.getBookCopy().getDueDate()));
         }
         return recs;
 
     }
 
-    public LibraryMember getmember(String name) {
-        for(LibraryMember m: mebers) {
-            if(name.equals(m.getFullName())) {
+    public Person getmember(String name) {
+        for(Person m: libraryMebers) {
+            if(name.equals(m.getFirstName())) {
                 return m;
             }
         }

@@ -17,7 +17,7 @@ public class Person {
         return firstName;
     }
 
-    public String getLastName() {
+  	public String getLastName() {
         return lastName;
     }
 
@@ -25,7 +25,24 @@ public class Person {
         return phoneNumber;
     }
 
-    public String getAddress() {
-        return address.toString();
+    public Address getAddress() {
+        return address;
     }
+    
+    // Setters Added By Abrha,
+    public void setFirstName(String firstName) {
+  		this.firstName = firstName;
+  	}
+
+  	public void setLastName(String lastName) {
+  		this.lastName = lastName;
+  	}
+
+  	public void setPhoneNumber(String phoneNumber) {
+  		this.phoneNumber = phoneNumber;
+  	}
+
+  	public void setAddress(Address address) {
+  		this.address = address;
+  	}
 }

@@ -17,4 +17,17 @@ public class Author extends Person {
     public String getShortBio() {
         return shortBio;
     }
+    
+    // Setters Added by Abrah,
+    public void setShortBio(String shortBio) {
+        this.shortBio = String.format("Author name is: %s %s. %n Address is %s  %s  ", getFirstName(), getLastName(), getAddress(),getPhoneNumber());
+	}
+
+	public void setCredentials(String credentials) {
+        this.credentials = String.format(" Author: %s %s   ", getFirstName(), getLastName());
+	}
+
+	
+    
+    
 }

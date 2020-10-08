@@ -3,20 +3,29 @@ package library.Model;
 import java.time.LocalDate;
 
 public class LibraryMember extends Person {
-    private String firstName;
+	 // Commented by Abrha
+	
+    /*private String firstName;
     private String lastName;
     private String phone;
-    private Address address;
+    private Address address;*/
+	
+	private Integer memberID;  // Added by Abrha
+	
 
-    public LibraryMember(String firstName, String lastName, String phoneNumber,Address address){
+    public LibraryMember(Integer memberID, String firstName, String lastName, String phoneNumber,Address address){
         super(firstName,lastName,phoneNumber,address);
-        this.firstName = firstName;
+        // Commented by Abrha
+        
+       /* this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phoneNumber;
-        this.address = super.address;
+        this.address = super.address; */ 
+               
+        this.memberID = memberID;   // Added by Abrha
     }
 
-    public String getFullName() {
+   /* public String getFullName() {
         return firstName;
     }
 
@@ -44,7 +53,7 @@ public class LibraryMember extends Person {
 
     public String getAddress() {
         return address.toString();
-    }
+    } */
 
     public void checkout(BookCopy copy, LocalDate todaysDate, LocalDate dueDate){
         return;
